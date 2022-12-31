@@ -76,8 +76,6 @@ def get_date():
         p_date.append([str(j_year), str(j_day), str(m_convert(j_month))])
         # e_date: [['2022','May','12'],...]
         # p_date: [['1401','2','دی'],...]
-        print(e_date[i])
-        print(p_date[i])
     return e_date, p_date
 
 
@@ -130,34 +128,53 @@ def form(e_date, p_date):
         fill=(0, 0, 0),
         font=e_font,
     )
-    img.save("./Price Table.png")
+    img.save("./out/Price Table.png")
 
 
-def calender(e_date, p_date):
-    p_font = ImageFont.truetype("./B Titr Bold.ttf", 110)
-    e_font = ImageFont.truetype("./Myriad Pro Bold.ttf", 100)
+def calendar(e_date, p_date):
+    e_week_font = ImageFont.truetype("./ARIBLK.TTF", 46)
+    p_week_font = ImageFont.truetype("./B Titr Bold.ttf", 50)
+    e_font = ImageFont.truetype("./ARIBLK.TTF", 60)
+    p_font = ImageFont.truetype("./B Titr Bold.ttf", 60)
+    e_month_font = ImageFont.truetype("./ARIBLK.TTF", 30)
+    p_month_font = ImageFont.truetype("./B Titr Bold.ttf", 50)
     for i in range(0, 6):
-        img = Image.open("./Date-template.jpg")
+        img = Image.open("./Date.png")
         d = ImageDraw.Draw(img)
 
-        day = e_date[i][0]
+        year = e_date[i][0]
         month = e_date[i][1]
-        year = e_date[i][2]
+        day = e_date[i][2]
 
-        j_day = p_date[i][0]
-        j_month = p_date[i][1]
-        j_year = p_date[i][2]
+        j_year = p_date[i][0]
+        j_day = p_date[i][1]
+        j_month = p_date[i][2]
 
         weekday = get_week_day(i)
-        
-        
-        
-        
+
+        d.text((30, 145), weekday[0], fill=(0, 0, 0), font=e_week_font)
+        d.text((480, 185), weekday[1], anchor='rm',
+               fill=(0, 0, 0), font=p_week_font)
+
+        # persian date
+        d.text((45, 290), j_year, fill=(0, 0, 0), font=p_font)
+        d.text((320, 315), j_month, anchor='mm',
+               fill=(255, 255, 255), font=p_month_font)
+        d.text((425, 285), j_day, fill=(255, 255, 255), font=p_font)
+
+        # english date
+        d.text((30, 395), str(int(day)), fill=(255, 255, 255), font=e_font)
+        d.text((110, 425), month, fill=(255, 255, 255), font=e_month_font)
+        d.text((330, 393), year, fill=(0, 0, 0), font=e_font)
+
+        # saving
+        img.save('./out/Date{}.png'.format(i))
 
 
 def main():
     e_date, p_date = get_date()
     form(e_date[0], p_date[0])
+    calendar(e_date, p_date)
 
 
 if __name__ == "__main__":
