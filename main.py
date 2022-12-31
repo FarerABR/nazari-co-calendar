@@ -139,7 +139,7 @@ def calendar(e_date, p_date):
     e_month_font = ImageFont.truetype("./ARIBLK.TTF", 30)
     p_month_font = ImageFont.truetype("./B Titr Bold.ttf", 50)
     for i in range(0, 6):
-        img = Image.open("./Date.png")
+        img = Image.open("./Date-template.png")
         d = ImageDraw.Draw(img)
 
         year = e_date[i][0]
