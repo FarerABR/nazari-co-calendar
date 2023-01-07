@@ -109,7 +109,7 @@ def form(e_date, p_date):
     # day
     d.text(
         (350, 480),
-        day,
+        str(int(day)),
         fill=(0, 0, 0),
         font=e_font,
     )
