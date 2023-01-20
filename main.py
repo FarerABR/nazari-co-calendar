@@ -1,5 +1,6 @@
 from PIL import Image, ImageDraw, ImageFont
 from datetime import date, timedelta
+import sys
 
 
 def gregorian_to_jalali(gy, gm, gd):
@@ -56,9 +57,9 @@ def get_week_day(day):
     return weekdays.get(day)
 
 
-def get_date():
-    week_day = date.weekday(date.today()) + 2
-    today = date.today()
+def get_date(today):
+    week_day = date.weekday(today) + 2
+    # today = date.today()
     current = today-timedelta(days=week_day)
     if week_day == 7:
         current += timedelta(days=7)
@@ -172,7 +173,17 @@ def calendar(e_date, p_date):
 
 
 def main():
-    e_date, p_date = get_date()
+    today = date.today()
+    if len(sys.argv) < 2:
+        raise Exception("Not enough arguments")
+    if sys.argv[1] == "nxt":
+        today = today+timedelta(days=7)
+    elif sys.argv[1] == "crr":
+        pass
+    else:
+        raise Exception("Wrong input\ncrr: this week\nnxt: next week\n")
+
+    e_date, p_date = get_date(today)
     form(e_date[0], p_date[0])
     calendar(e_date, p_date)
 
