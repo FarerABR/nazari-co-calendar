@@ -161,7 +161,7 @@ def calendar(e_date, p_date):
         d.text((45, 290), j_year, fill=(0, 0, 0), font=p_font)
         d.text((320, 315), j_month, anchor='mm',
                fill=(255, 255, 255), font=p_month_font)
-        d.text((425, 285), j_day, fill=(255, 255, 255), font=p_font)
+        d.text((415, 285), j_day, fill=(255, 255, 255), font=p_font)
 
         # english date
         d.text((30, 395), str(int(day)), fill=(255, 255, 255), font=e_font)
