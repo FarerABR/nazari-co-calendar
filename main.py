@@ -81,55 +81,56 @@ def get_date(today):
 
 
 def form(e_date, p_date):
-    month = e_date[1]
-    day = e_date[2]
-    year = e_date[0]
 
-    j_day, j_month, j_year = p_date[1], p_date[2], p_date[0]
-
-    img = Image.open("./Price Table-template.png")
-    d = ImageDraw.Draw(img)
     p_font = ImageFont.truetype("./B Titr Bold.ttf", 110)
     e_font = ImageFont.truetype("./Myriad Pro Bold.ttf", 100)
 
-    # persian date
-    # year
-    d.text((390, 350), j_year, fill=(0, 0, 0), font=p_font)
-    # month
-    d.text(
-        (820, 400),
-        j_month,
-        fill=(0, 0, 0),
-        anchor="mm",
-        font=p_font,
-    )
-    # day
-    d.text((1060, 350), j_day, fill=(0, 0, 0), font=p_font)
+    for i in range(0, 6):
+        img = Image.open("./Price Table-template.png")
+        d = ImageDraw.Draw(img)
+        j_day, j_month, j_year = p_date[i][1], p_date[i][2], p_date[i][0]
+        month = e_date[i][1]
+        day = e_date[i][2]
+        year = e_date[i][0]
 
-    # english date
-    # day
-    d.text(
-        (350, 480),
-        str(int(day)),
-        fill=(0, 0, 0),
-        font=e_font,
-    )
-    # month
-    d.text(
-        (730, 530),
-        month,
-        anchor="mm",
-        fill=(0, 0, 0),
-        font=e_font,
-    )
-    # year
-    d.text(
-        (1000, 480),
-        year,
-        fill=(0, 0, 0),
-        font=e_font,
-    )
-    img.save("./out/Price Table.png")
+        # persian date
+        # year
+        d.text((390, 350), j_year, fill=(0, 0, 0), font=p_font)
+        # month
+        d.text(
+            (820, 400),
+            j_month,
+            fill=(0, 0, 0),
+            anchor="mm",
+            font=p_font,
+        )
+        # day
+        d.text((1060, 350), j_day, fill=(0, 0, 0), font=p_font)
+
+        # english date
+        # day
+        d.text(
+            (350, 480),
+            str(int(day)),
+            fill=(0, 0, 0),
+            font=e_font,
+        )
+        # month
+        d.text(
+            (730, 530),
+            month,
+            anchor="mm",
+            fill=(0, 0, 0),
+            font=e_font,
+        )
+        # year
+        d.text(
+            (1000, 480),
+            year,
+            fill=(0, 0, 0),
+            font=e_font,
+        )
+        img.save("./out/Price Table{}.png".format(i))
 
 
 def calendar(e_date, p_date):
@@ -184,7 +185,7 @@ def main():
         raise Exception("Wrong input\ncrr: this week\nnxt: next week\n")
 
     e_date, p_date = get_date(today)
-    form(e_date[0], p_date[0])
+    form(e_date, p_date)
     calendar(e_date, p_date)
 
 
