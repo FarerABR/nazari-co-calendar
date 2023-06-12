@@ -86,7 +86,7 @@ def form(e_date, p_date):
     e_font = ImageFont.truetype("./Myriad Pro Bold.ttf", 100)
 
     for i in range(0, 6):
-        img = Image.open("./Price Table-template.png")
+        img = Image.open("./Price Table-template.jpg")
         d = ImageDraw.Draw(img)
         j_day, j_month, j_year = p_date[i][1], p_date[i][2], p_date[i][0]
         month = e_date[i][1]
@@ -130,7 +130,7 @@ def form(e_date, p_date):
             fill=(0, 0, 0),
             font=e_font,
         )
-        img.save("./out/Price Table{}.png".format(i))
+        img.save("./out/Price Table{}.jpg".format(i))
 
 
 def calendar(e_date, p_date):
