@@ -9,8 +9,15 @@ def gregorian_to_jalali(gy, gm, gd):
         gy2 = gy + 1
     else:
         gy2 = gy
-    days = (355666 + (365 * gy) + ((gy2 + 3) // 4) - ((gy2 + 99) // 100) +
-            ((gy2 + 399) // 400) + gd + g_d_m[gm - 1])
+    days = (
+        355666
+        + (365 * gy)
+        + ((gy2 + 3) // 4)
+        - ((gy2 + 99) // 100)
+        + ((gy2 + 399) // 400)
+        + gd
+        + g_d_m[gm - 1]
+    )
     jy = -1595 + (33 * (days // 12053))
     days %= 12053
     jy += 4 * (days // 1461)
@@ -60,7 +67,7 @@ def get_week_day(day):
 def get_date(today):
     week_day = date.weekday(today) + 2
     # today = date.today()
-    current = today-timedelta(days=week_day)
+    current = today - timedelta(days=week_day)
     if week_day == 7:
         current += timedelta(days=7)
     e_date = []
@@ -71,7 +78,8 @@ def get_date(today):
         month = current.strftime("%B")
         year = current.strftime("%Y")
         j_year, j_month, j_day = gregorian_to_jalali(
-            int(year), int(num_month), int(day))
+            int(year), int(num_month), int(day)
+        )
         current += timedelta(days=1)
         e_date.append([str(year), str(month), str(day)])
         p_date.append([str(j_year), str(j_day), str(m_convert(j_month))])
@@ -81,7 +89,6 @@ def get_date(today):
 
 
 def form(e_date, p_date):
-
     p_font = ImageFont.truetype("./B Titr Bold.ttf", 110)
     e_font = ImageFont.truetype("./Myriad Pro Bold.ttf", 100)
 
@@ -155,22 +162,22 @@ def calendar(e_date, p_date):
         weekday = get_week_day(i)
 
         d.text((30, 145), weekday[0], fill=(0, 0, 0), font=e_week_font)
-        d.text((480, 185), weekday[1], anchor='rm',
-               fill=(0, 0, 0), font=p_week_font)
+        d.text((480, 185), weekday[1], anchor="rm", fill=(0, 0, 0), font=p_week_font)
 
         # persian date
         d.text((45, 290), j_year, fill=(0, 0, 0), font=p_font)
-        d.text((320, 315), j_month, anchor='mm',
-               fill=(255, 255, 255), font=p_month_font)
+        d.text(
+            (320, 315), j_month, anchor="mm", fill=(255, 255, 255), font=p_month_font
+        )
         d.text((415, 285), j_day, fill=(255, 255, 255), font=p_font)
 
         # english date
         d.text((30, 395), str(int(day)), fill=(255, 255, 255), font=e_font)
-        d.text((110, 425), month, fill=(255, 255, 255), font=e_month_font)
+        d.text((200, 445), month, anchor="mm", fill=(255, 255, 255), font=e_month_font)
         d.text((330, 393), year, fill=(0, 0, 0), font=e_font)
 
         # saving
-        img.save('./out/Date{}.png'.format(i))
+        img.save("./out/Date{}.png".format(i))
 
 
 def main():
@@ -178,7 +185,7 @@ def main():
     if len(sys.argv) < 2:
         raise Exception("Not enough arguments")
     if sys.argv[1] == "nxt":
-        today = today+timedelta(days=7)
+        today = today + timedelta(days=7)
     elif sys.argv[1] == "crr":
         pass
     else:
