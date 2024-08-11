@@ -1,6 +1,18 @@
 from PIL import Image, ImageDraw, ImageFont
 from datetime import date, timedelta
 import sys
+import os
+if os.name == "nt":
+    import arabic_reshaper
+    from bidi.algorithm import get_display
+
+
+def windows_text(txt):
+    return get_display(
+        arabic_reshaper.reshape(
+            u'%s' % str(txt)
+        )
+    )
 
 
 def gregorian_to_jalali(gy, gm, gd):
@@ -103,14 +115,25 @@ def form(e_date, p_date):
         # persian date
         # year
         d.text((390, 350), j_year, fill=(0, 0, 0), font=p_font)
+
         # month
-        d.text(
-            (820, 400),
-            j_month,
-            fill=(0, 0, 0),
-            anchor="mm",
-            font=p_font,
-        )
+        if os.name == "nt":
+            d.text(
+                (820, 400),
+                windows_text(j_month),
+                fill=(0, 0, 0),
+                anchor="mm",
+                font=p_font,
+            )
+        else:
+            d.text(
+                (820, 400),
+                j_month,
+                fill=(0, 0, 0),
+                anchor="mm",
+                font=p_font,
+            )
+
         # day
         d.text((1060, 350), j_day, fill=(0, 0, 0), font=p_font)
 
@@ -162,18 +185,29 @@ def calendar(e_date, p_date):
         weekday = get_week_day(i)
 
         d.text((30, 145), weekday[0], fill=(0, 0, 0), font=e_week_font)
-        d.text((480, 185), weekday[1], anchor="rm", fill=(0, 0, 0), font=p_week_font)
+        if os.name == "nt":
+            d.text((480, 185), windows_text(weekday[1]), anchor="rm",
+                   fill=(0, 0, 0), font=p_week_font)
+        else:
+            d.text((480, 185), weekday[1], anchor="rm",
+                   fill=(0, 0, 0), font=p_week_font)
 
         # persian date
         d.text((45, 290), j_year, fill=(0, 0, 0), font=p_font)
-        d.text(
-            (320, 315), j_month, anchor="mm", fill=(255, 255, 255), font=p_month_font
-        )
+        if os.name == "nt":
+            d.text(
+                (320, 315), windows_text(j_month), anchor="mm", fill=(255, 255, 255), font=p_month_font
+            )
+        else:
+            d.text(
+                (320, 315), j_month, anchor="mm", fill=(255, 255, 255), font=p_month_font
+            )
         d.text((415, 285), j_day, fill=(255, 255, 255), font=p_font)
 
         # english date
         d.text((30, 395), str(int(day)), fill=(255, 255, 255), font=e_font)
-        d.text((200, 445), month, anchor="mm", fill=(255, 255, 255), font=e_month_font)
+        d.text((200, 445), month, anchor="mm", fill=(
+            255, 255, 255), font=e_month_font)
         d.text((330, 393), year, fill=(0, 0, 0), font=e_font)
 
         # saving
