@@ -76,7 +76,7 @@ def get_week_day(day):
     return weekdays.get(day)
 
 
-def get_date(today):
+def get_week_date(today):
     week_day = date.weekday(today) + 2
     # today = date.today()
     current = today - timedelta(days=week_day)
@@ -100,7 +100,7 @@ def get_date(today):
     return e_date, p_date
 
 
-def form(e_date, p_date):
+def form(e_date, p_date,sub=""):
     p_font = ImageFont.truetype("./B Titr Bold.ttf", 110)
     e_font = ImageFont.truetype("./Myriad Pro Bold.ttf", 100)
 
@@ -160,10 +160,13 @@ def form(e_date, p_date):
             fill=(0, 0, 0),
             font=e_font,
         )
-        img.save("./out/Price Table{}.jpg".format(i))
+        if sub != "":
+            img.save("./out/month/{}Price Table{}.jpg".format(sub,i))
+        else:
+            img.save("./out/Price Table{}.jpg".format(i))
 
 
-def calendar(e_date, p_date):
+def calendar(e_date, p_date,sub=""):
     e_week_font = ImageFont.truetype("./ARIBLK.TTF", 46)
     p_week_font = ImageFont.truetype("./B Titr Bold.ttf", 50)
     e_font = ImageFont.truetype("./ARIBLK.TTF", 60)
@@ -182,7 +185,8 @@ def calendar(e_date, p_date):
         j_day = p_date[i][1]
         j_month = p_date[i][2]
 
-        weekday = get_week_day(i)
+        j = i % 6
+        weekday = get_week_day(j)
 
         d.text((30, 145), weekday[0], fill=(0, 0, 0), font=e_week_font)
         if os.name == "nt":
@@ -211,7 +215,28 @@ def calendar(e_date, p_date):
         d.text((330, 393), year, fill=(0, 0, 0), font=e_font)
 
         # saving
-        img.save("./out/Date{}.png".format(i))
+        if sub != "":
+            img.save("./out/month/{}Date{}.png".format(sub,i))
+        else:
+            img.save("./out/Date{}.png".format(i))
+
+
+def month(today):
+    e_date, p_date = get_week_date(today)
+    form(e_date, p_date,"0-")
+    calendar(e_date, p_date,"0-")
+    
+    e_date, p_date = get_week_date(today + timedelta(days=7))
+    form(e_date, p_date,"1-")
+    calendar(e_date, p_date,"1-")
+    
+    e_date, p_date = get_week_date(today + timedelta(days=14))
+    form(e_date, p_date,"2-")
+    calendar(e_date, p_date,"2-")
+    
+    e_date, p_date = get_week_date(today + timedelta(days=21))
+    form(e_date, p_date,"3-")
+    calendar(e_date, p_date,"3-")
 
 
 def main():
@@ -222,10 +247,12 @@ def main():
         today = today + timedelta(days=7)
     elif sys.argv[1] == "crr":
         pass
+    elif sys.argv[1] == "month":
+        month(today+timedelta(days=7))
     else:
         raise Exception("Wrong input\ncrr: this week\nnxt: next week\n")
 
-    e_date, p_date = get_date(today)
+    e_date, p_date = get_week_date(today)
     form(e_date, p_date)
     calendar(e_date, p_date)
 
